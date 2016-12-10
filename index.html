@@ -5,26 +5,24 @@
     <title>Digital Profile Project</title>
     <link rel="stylesheet" type="text/css" href="main.css">
     <script src="https://d3js.org/d3.v4.min.js"></script>
-    <script src="./Data/output.json"></script>
-
+    <script src="./Data/output.js"></script>
     <script src="graph.js"></script>
 </head>
 <body>
   <svg width="1400" height="1200"></svg>
-  <div id="right-hand">
+<div id="bottom-box">
+  <div id="display-options">
+    <h2>Display Options</h2>
+    <button id="toggleRefs">REFS OFF</button>
+    <button id="toggleTags">TAGS OFF</button>
+    <button id="clearData">Clear Data</button>
+  </div>
     <div id="node-box">
       <h2> Data </h2>
       <ul id="data">
 
       </ul>
     </div>
-    <div id="display-options">
-      <h2>Display Options</h2>
-      <p> Click to turn on or off.</p>
-      <button id="toggleRefs">REFS OFF</button>
-      <button id="toggleTags">TAGS OFF</button>
-      <button id="clearData">Clear Data</button>
-    </div>
-  </div>
+</div>
 </body>
 </html>

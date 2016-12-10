@@ -89,7 +89,8 @@ fs.readFileSync('./Data/Digital Profile - Bibliography.tsv').toString().trim().s
 var centralNode = createCentralNode(group1)
 output = JSON.stringify(group0.concat(centralNode, group1, group2, group3, group5)); // an array of the nodes and datapoints.
 
-output = '{ "nodes": '+output+' , "links": '+JSON.stringify(createLinks(output)) +'}'
+// This is the final output, a string of a variable 'output' assigned a JSON-like string value. 
+output = 'var output = { "nodes": '+output+' , "links": '+JSON.stringify(createLinks(output)) +'}'
 
 function createCentralNode(tagNodes) {
   var DigitalPeople = { group: 10, text: ['Digital People']}
@@ -163,4 +164,4 @@ function removeDups(a){ // possible not any actual duplicates.
 }
 
 
-fs.appendFileSync("./Data/output.json", output);
+fs.appendFileSync("./Data/output.js", output);
