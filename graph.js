@@ -102,15 +102,17 @@ var color = d3.scaleOrdinal()
 
     var simulation =
         d3.forceSimulation()
-        .force("charge", d3.forceManyBody().strength(function(d) {return d.group * -11}))
+        .force("charge", d3.forceManyBody().strength(function(d) {
+                       return d.group * -60}))
         .force("collide", d3.forceCollide().radius(function (d) {
                         if(d.group==10){return 48}
-                        else{return 15 - d.group}
-                        }).strength(2).iterations(2))
+                        else{return 10}
+                      }).strength(2).iterations(2))
         .force("link", d3.forceLink().id(function(d, i) { return i;}).distance(20).strength(0.9))
         .force("center", d3.forceCenter(width/2, height/2))
-        .force('X', d3.forceX(width/2).strength(0.15)) // retuirnx 100 d,group
-        .force('Y', d3.forceY(height/2).strength(0.15));
+        .force('X', d3.forceX(width/2).strength(0.20)) // retuirnx 100 d,group
+        .force('Y', d3.forceY(height/2).strength(0.20));
+
 
         simulation
           .nodes(graph.nodes)
@@ -146,6 +148,7 @@ var color = d3.scaleOrdinal()
         .on("end", dragended));
 
       node.on("click", function(d, i) {
+        console.log(d);
         if(d.group==10) return;
         if(d3.select(this).attr("r") == radius){
           addNodes(d)
@@ -219,7 +222,7 @@ var color = d3.scaleOrdinal()
 
     function addNodes(node) {
       console.log('NODE: ',node);
-      if(node.group == 8) {
+      if(node.group == 1) {
         var nodeText = ''
         var refNo = ''
         var refText = ''
