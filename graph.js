@@ -16,10 +16,10 @@ document.addEventListener("DOMContentLoaded", function(event) {
   document.getElementById('downloadText').addEventListener('click', getText);
 
   function getText(){
-      var content = dataList.innerHTML;
+      var content = dataList.innerText;
       var dl = document.createElement('a');
       dl.setAttribute('href', 'data:text/csv;charset=utf-8,' + encodeURIComponent(content));
-      dl.setAttribute('download', 'filename.txt');
+      dl.setAttribute('download', 'Digital-Profile-Data.txt');
       dl.click();
   }
 
@@ -164,7 +164,6 @@ var color = d3.scaleOrdinal()
         .on("end", dragended));
 
       node.on("click", function(d, i) {
-        console.log(d);
         if(d.group==10) return;
         if(d3.select(this).attr("r") == radius){
           addNodes(d)
@@ -237,7 +236,6 @@ var color = d3.scaleOrdinal()
     }
 
     function addNodes(node) {
-      console.log('NODE: ',node);
       if(node.group == 1) {
         var nodeText = ''
         var refNo = ''
@@ -270,17 +268,13 @@ var color = d3.scaleOrdinal()
         } else {
           dataText += '<p class="tags hidden">('+tags+')</p>'
         }
-        console.log(dataText);
         if(refsVisible){
-          console.log('refs hitt');
           dataText += '<p class="refs ref-text"> '+refText+' '+year+' </p>'
         }else {
           dataText += '<p class="refs hidden ref-text"> '+refText+' '+year+' </p>'
         }
-        console.log(dataText);
 
         dataList.innerHTML += '<li>'+dataText+'</li>'
-        console.log(dataList);
       }
     }
 
