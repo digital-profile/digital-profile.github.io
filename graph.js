@@ -13,16 +13,25 @@ document.addEventListener("DOMContentLoaded", function(event) {
       else { return radius}
     });
   });
-  document.getElementById('downloadText').addEventListener('click', getText);
 
-  function getText(){
-      var content = dataList.innerText;
-      var dl = document.createElement('a');
-      dl.setAttribute('href', 'data:text/csv;charset=utf-8,' + encodeURIComponent(content));
-      dl.setAttribute('download', 'Digital-Profile-Data.txt');
-      dl.click();
-  }
+  document.getElementById('downloadText').addEventListener('click', saveData);
 
+function saveData () {
+   var data = dataList.innerText || dataList.textContext ;
+   var filename = 'Digital-Profile-Data'
+   var blob = new Blob([data], {type: 'text/plain'});
+    if(window.navigator.msSaveOrOpenBlob) {
+        window.navigator.msSaveBlob(blob, filename);
+    }
+    else{
+        var elem = window.document.createElement('a');
+        elem.href = window.URL.createObjectURL(blob);
+        elem.download = filename;
+        document.body.appendChild(elem);
+        elem.click();
+        document.body.removeChild(elem);
+    }
+}
 
   document.addEventListener('click', function (e) {
     if (e.target.classList.contains('ref-number')) {
@@ -33,14 +42,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
       }
     };
   })
-  //
-  // document.getElementById("downloadText").addEventListener("click",
-  //     link.innerHTML = 'download image';
-  //     link.addEventListener('click', function(ev) {
-  //     link.href = canvas.toDataURL();
-  //     link.download = "mypainting.png";
-  // }, false);
-  //
+
   function toggleDisplay(e) {
     if(e.target.id=="toggleTags"){
       tagsSwitch(tagsVisible)
@@ -277,7 +279,4 @@ var color = d3.scaleOrdinal()
         dataList.innerHTML += '<li>'+dataText+'</li>'
       }
     }
-
-//  })
-
 });
