@@ -1,76 +1,92 @@
 document.addEventListener("DOMContentLoaded", function(event) {
+  var dataList = document.getElementById('data');
 
-var dataList = document.getElementById('data');
+  var tagsVisible = true;
+  var refsVisible = true;
 
-var tagsVisible = true;
-var refsVisible = true;
-
-document.getElementById("toggleRefs").addEventListener("click", toggleDisplay);
-document.getElementById("toggleTags").addEventListener("click", toggleDisplay);
-document.getElementById("clearData").addEventListener("click", function() {
-  dataList.innerHTML = "";
-  d3.selectAll("circle").attr("r", function(d){
-    if(d.group==10) return 40
-    else { return radius}
+  document.getElementById("toggleRefs").addEventListener("click", toggleDisplay);
+  document.getElementById("toggleTags").addEventListener("click", toggleDisplay);
+  document.getElementById("clearData").addEventListener("click", function() {
+    dataList.innerHTML = "";
+    d3.selectAll("circle").attr("r", function(d){
+      if(d.group==10) return 40
+      else { return radius}
+    });
   });
-});
+  document.getElementById('downloadText').addEventListener('click', getText);
 
-document.addEventListener('click', function (e) {
-  if (e.target.classList.contains('ref-number')) {
-    var refText = document.getElementsByClassName('ref-text', e.target.classList[1])
-    for (var i = 0; i < refText.length; i++) { // childNodes?
-      if(refText[i].classList[1] == e.target.classList[1])
-        refText[i].classList.toggle("hidden")
-    }
-  };
-})
-//
-function toggleDisplay(e) {
-  if(e.target.id=="toggleTags"){
-    tagsSwitch(tagsVisible)
+  function getText(){
+      var content = dataList.innerHTML;
+      var dl = document.createElement('a');
+      dl.setAttribute('href', 'data:text/csv;charset=utf-8,' + encodeURIComponent(content));
+      dl.setAttribute('download', 'filename.txt');
+      dl.click();
   }
-  if(e.target.id=="toggleRefs"){
-    refsSwitch(refsVisible)
-  }
-}
-function tagsSwitch(visible) {
-  var tags = document.getElementsByClassName('tags')
-   if(visible){
-    for (var i = 0; i < tags.length; i++) {
-      tags[i].classList.add("hidden")
-    }
-    toggleTags.innerHTML = "TAGS ON";
-    toggleTags.classList.toggle("off")
-    tagsVisible = false;
-   }else {
-     for (var i = 0; i < tags.length; i++) {
-       tags[i].classList.remove("hidden")
-     }
-     toggleTags.innerHTML = "TAGS OFF";
-     toggleTags.classList.toggle("off")
-     tagsVisible = true;
-   }
-}
- function refsSwitch(visible) {
-   var refs = document.getElementsByClassName('refs')
-    if(visible){
-     for (var i = 0; i < refs.length; i++) {
-       refs[i].classList.add("hidden")
-     }
-     toggleRefs.innerHTML = "REFS ON"
-     toggleRefs.classList.toggle("off")
 
-     refsVisible = false;
-    }else {
-      for (var i = 0; i < refs.length; i++) {
-        refs[i].classList.remove("hidden");
+
+  document.addEventListener('click', function (e) {
+    if (e.target.classList.contains('ref-number')) {
+      var refText = document.getElementsByClassName('ref-text', e.target.classList[1])
+      for (var i = 0; i < refText.length; i++) { // childNodes?
+        if(refText[i].classList[1] == e.target.classList[1])
+          refText[i].classList.toggle("hidden")
       }
-      toggleRefs.innerHTML = "REFS OFF"
-      toggleRefs.classList.toggle("off")
-
-      refsVisible = true;
+    };
+  })
+  //
+  // document.getElementById("downloadText").addEventListener("click",
+  //     link.innerHTML = 'download image';
+  //     link.addEventListener('click', function(ev) {
+  //     link.href = canvas.toDataURL();
+  //     link.download = "mypainting.png";
+  // }, false);
+  //
+  function toggleDisplay(e) {
+    if(e.target.id=="toggleTags"){
+      tagsSwitch(tagsVisible)
     }
- }
+    if(e.target.id=="toggleRefs"){
+      refsSwitch(refsVisible)
+    }
+  }
+  function tagsSwitch(visible) {
+    var tags = document.getElementsByClassName('tags')
+     if(visible){
+      for (var i = 0; i < tags.length; i++) {
+        tags[i].classList.add("hidden")
+      }
+      toggleTags.innerHTML = "TAGS ON";
+      toggleTags.classList.toggle("off")
+      tagsVisible = false;
+     }else {
+       for (var i = 0; i < tags.length; i++) {
+         tags[i].classList.remove("hidden")
+       }
+       toggleTags.innerHTML = "TAGS OFF";
+       toggleTags.classList.toggle("off")
+       tagsVisible = true;
+     }
+  }
+   function refsSwitch(visible) {
+     var refs = document.getElementsByClassName('refs')
+      if(visible){
+       for (var i = 0; i < refs.length; i++) {
+         refs[i].classList.add("hidden")
+       }
+       toggleRefs.innerHTML = "REFS ON"
+       toggleRefs.classList.toggle("off")
+
+       refsVisible = false;
+      }else {
+        for (var i = 0; i < refs.length; i++) {
+          refs[i].classList.remove("hidden");
+        }
+        toggleRefs.innerHTML = "REFS OFF"
+        toggleRefs.classList.toggle("off")
+
+        refsVisible = true;
+      }
+   }
 var graph
 var radius = 6;
 //Append a SVG to the body of the html page. Assign this SVG as an object to svg
