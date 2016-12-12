@@ -1,5 +1,5 @@
 body{
-  display: flex;
+  display: block;
   font-family: Arial, Helvetica, sans-serif;
 
 }
@@ -18,12 +18,15 @@ body{
   white-space: pre-wrap;
 
 }
+.refs{
+  display: block;
+}
 .ref-number {
   display: block;
   margin: 10px 0;
 }
  .ref-text {
-  display: block;
+  display: inline;;
   margin: 10px 0;
 }
 .tags {
@@ -39,24 +42,27 @@ body{
 }
 svg {
   border: 1px solid red;
+  margin: 2px;
 }
-#right-hand{
-  display: block;
+#bottom-box{
+  display: flex;
 }
 #node-box {
-  height: 1000px;
-  width: 300px;
+  height: 300px;
+  width: 1204px;
+  margin: 2px;
   overflow-y: scroll;
   border: 1px solid red;
-  margin-left: 10px;
 }
 #data{
+  font-size: 13px;
   padding-left: 20px;
 }
 #display-options{
-  height: 188px;
-  width: 300px;
-  margin: 10px;
+  height: 300px;
+  width: 188px;
+  margin: 2px;
+  margin-right: 5px;
   border: 1px solid blue;
   text-align: center;
 }

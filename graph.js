@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", function(event) {
-var d3 = require("d3");
+
 var dataList = document.getElementById('data');
 
 var tagsVisible = true;
@@ -10,7 +10,7 @@ document.getElementById("toggleTags").addEventListener("click", toggleDisplay);
 document.getElementById("clearData").addEventListener("click", function() {
   dataList.innerHTML = "";
   d3.selectAll("circle").attr("r", function(d){
-    if(d.group==0) return 40
+    if(d.group==10) return 40
     else { return radius}
   });
 });
@@ -82,8 +82,10 @@ var color = d3.scaleOrdinal()
           .range(["#703030", "#2F343B" , "#7E827A", "#E3CDA4", "#C77966"]);;
 
 
-  d3.json("./Data/output.json", function(json) {
-    var graph = json
+//  d3.json("./Data/output.json", function(json) {
+
+// 'output' is the data from the JSON-like string in '/Data/output.js'
+    var graph = output
 
     var defs = svg.append('svg:defs');
 
@@ -100,15 +102,17 @@ var color = d3.scaleOrdinal()
 
     var simulation =
         d3.forceSimulation()
-        .force("charge", d3.forceManyBody().strength(function(d) {return d.group * -11}))
+        .force("charge", d3.forceManyBody().strength(function(d) {
+                       return d.group * -60}))
         .force("collide", d3.forceCollide().radius(function (d) {
                         if(d.group==10){return 48}
-                        else{return 15 - d.group}
-                        }).strength(2).iterations(2))
+                        else{return 10}
+                      }).strength(2).iterations(2))
         .force("link", d3.forceLink().id(function(d, i) { return i;}).distance(20).strength(0.9))
         .force("center", d3.forceCenter(width/2, height/2))
-        .force('X', d3.forceX(width/2).strength(0.15)) // retuirnx 100 d,group
-        .force('Y', d3.forceY(height/2).strength(0.15));
+        .force('X', d3.forceX(width/2).strength(0.20)) // retuirnx 100 d,group
+        .force('Y', d3.forceY(height/2).strength(0.20));
+
 
         simulation
           .nodes(graph.nodes)
@@ -144,7 +148,8 @@ var color = d3.scaleOrdinal()
         .on("end", dragended));
 
       node.on("click", function(d, i) {
-        if(d.group==0) return;
+        console.log(d);
+        if(d.group==10) return;
         if(d3.select(this).attr("r") == radius){
           addNodes(d)
 
@@ -217,7 +222,7 @@ var color = d3.scaleOrdinal()
 
     function addNodes(node) {
       console.log('NODE: ',node);
-      if(node.group == 8) {
+      if(node.group == 1) {
         var nodeText = ''
         var refNo = ''
         var refText = ''
@@ -245,20 +250,24 @@ var color = d3.scaleOrdinal()
         var dataText = '<p class="datum">'+nodeText+' </p>'
 
         if(tagsVisible){
-          dataText += '<p class="tags">('+tags+')</>'
+          dataText += '<p class="tags">('+tags+')</p>'
         } else {
           dataText += '<p class="tags hidden">('+tags+')</p>'
         }
-
+        console.log(dataText);
         if(refsVisible){
-          dataText += '<div class="refs"><p class="ref-number refId'+node.index+'">['+refNo+']</p> <p class="ref-text refId'+node.index+'">'+refText+' '+year+' </p></div>'
+          console.log('refs hitt');
+          dataText += '<p class="refs ref-text"> '+refText+' '+year+' </p>'
         }else {
-          dataText += '<div class="refs hidden"><p class="ref-number refId'+node.index+'">['+refNo+']</p> <p class="ref-text refId'+node.index+'"> '+refText+' '+year+' </p></div>'
+          dataText += '<p class="refs hidden ref-text"> '+refText+' '+year+' </p>'
         }
+        console.log(dataText);
+
         dataList.innerHTML += '<li>'+dataText+'</li>'
+        console.log(dataList);
       }
     }
 
-  })
+//  })
 
 });

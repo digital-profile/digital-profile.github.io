@@ -8,13 +8,13 @@ var output = '[ '
    var columns = line.replace(/(\r\n|\n|\r)/gm,"").split('\t')
    if(columns[0]) {
      parent = columns[0]
-     output += ' { "group": 1, "text":['+JSON.stringify(parent)+'], "tags":['+JSON.stringify(parent)+'] },'
+     output += ' { "group": 8, "text":['+JSON.stringify(parent)+'], "tags":['+JSON.stringify(parent)+'] },'
      }
    if(columns[1]) { child = columns[1]
-     output += ' { "group": 2, "text":['+JSON.stringify(child)+'], "tags":['+JSON.stringify(parent)+'] }, '
+     output += ' { "group": 4, "text":['+JSON.stringify(child)+'], "tags":['+JSON.stringify(parent)+'] }, '
      }
    if(columns[2]) { grandchild = columns[2]
-     output += ' { "group": 3, "text":['+JSON.stringify(grandchild)+'], "tags":['+JSON.stringify(child)+'] }, '
+     output += ' { "group": 2, "text":['+JSON.stringify(grandchild)+'], "tags":['+JSON.stringify(child)+'] }, '
      }
   });
 
@@ -46,7 +46,7 @@ var dataPoints = ""
       }
     }
     for (var i = 0; i < tags.length; i++) {
-    dataPoints += '{"group": 8, "text":['+JSON.stringify(columns[2])+'], "references":['+referenceStr+'], "year": "'+columns[1]+'",  "tags":['+(tags[i])+']},'
+    dataPoints += '{"group": 1, "text":['+JSON.stringify(columns[2])+'], "references":['+referenceStr+'], "year": "'+columns[1]+'",  "tags":['+(tags[i])+']},'
     }
   })
 
@@ -55,48 +55,49 @@ output = output.replace(/,(?=[^,]*$)/, '')
 
 var x = JSON.parse(output); //Have to parse to use in JS, to remove duplicates.
 
-var group1 = x.filter(function(node){
-    return (node.group == 1);
+var parentNodes = x.filter(function(node){
+    return (node.group == 8);
 })
-var group2 = x.filter(function(node){
+var childNodes = x.filter(function(node){
+    return (node.group == 4);
+})
+var gChildNodes = x.filter(function(node){
     return (node.group == 2);
 })
-var group3 = x.filter(function(node){
-    return (node.group == 3);
-})
-var group5 = x.filter(function(node){
-    return (node.group == 8);
+var dataNodes = x.filter(function(node){
+    return (node.group == 1);
 })
 var group0 = x.filter(function(node){
     return (node.group == 0);
 })
 
-group1 = merge(group1)
-group2 = merge(group2)
-group3 = merge(group3)
+parentNodes = merge(parentNodes)
+childNodes = merge(childNodes)
+gChildNodes = merge(gChildNodes)
 
 fs.readFileSync('./Data/Digital Profile - Bibliography.tsv').toString().trim().split('\n').forEach(function(line) {
   var columns = line.replace(/(\r\n|\n|\r)/gm,"").split('\t')
 
-  for (var i = 0; i < group5.length; i++) {
-    for (var j = 0; j < group5[i].references.length; j++) {
-      if(columns[0] == group5[i].references[j].number){
-          group5[i].references[j].text = columns[1]
+  for (var i = 0; i < dataNodes.length; i++) {
+    for (var j = 0; j < dataNodes[i].references.length; j++) {
+      if(columns[0] == dataNodes[i].references[j].number){
+          dataNodes[i].references[j].text = columns[1]
       }
     }
   }
 })
-var centralNode = createCentralNode(group1)
-output = JSON.stringify(group0.concat(centralNode, group1, group2, group3, group5)); // an array of the nodes and datapoints.
+var centralNode = createCentralNode(parentNodes)
+output = JSON.stringify(group0.concat(centralNode, parentNodes, childNodes, gChildNodes, dataNodes)); // an array of the nodes and datapoints.
 
-output = '{ "nodes": '+output+' , "links": '+JSON.stringify(createLinks(output)) +'}'
+// This is the final output, a string JSON-like string
+output = 'var output = { "nodes": '+output+' , "links": '+JSON.stringify(createLinks(output)) +'}'
 
 function createCentralNode(tagNodes) {
   var DigitalPeople = { group: 10, text: ['Digital People']}
   var tags = []
   var flattened = []
   for (var i = 0; i < tagNodes.length; i++) {
-    if(tagNodes[i].group == 1){
+    if(tagNodes[i].group == 8){
       tags.push(tagNodes[i].text)
     }
   }
@@ -163,4 +164,4 @@ function removeDups(a){ // possible not any actual duplicates.
 }
 
 
-fs.appendFileSync("./Data/output.json", output);
+fs.appendFileSync("./Data/output.js", output);
