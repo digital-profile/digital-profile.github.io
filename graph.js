@@ -1,76 +1,92 @@
 document.addEventListener("DOMContentLoaded", function(event) {
+  var dataList = document.getElementById('data');
 
-var dataList = document.getElementById('data');
+  var tagsVisible = true;
+  var refsVisible = true;
 
-var tagsVisible = true;
-var refsVisible = true;
-
-document.getElementById("toggleRefs").addEventListener("click", toggleDisplay);
-document.getElementById("toggleTags").addEventListener("click", toggleDisplay);
-document.getElementById("clearData").addEventListener("click", function() {
-  dataList.innerHTML = "";
-  d3.selectAll("circle").attr("r", function(d){
-    if(d.group==10) return 40
-    else { return radius}
+  document.getElementById("toggleRefs").addEventListener("click", toggleDisplay);
+  document.getElementById("toggleTags").addEventListener("click", toggleDisplay);
+  document.getElementById("clearData").addEventListener("click", function() {
+    dataList.innerHTML = "";
+    d3.selectAll("circle").attr("r", function(d){
+      if(d.group==10) return 40
+      else { return radius}
+    });
   });
-});
+  document.getElementById('downloadText').addEventListener('click', getText);
 
-document.addEventListener('click', function (e) {
-  if (e.target.classList.contains('ref-number')) {
-    var refText = document.getElementsByClassName('ref-text', e.target.classList[1])
-    for (var i = 0; i < refText.length; i++) { // childNodes?
-      if(refText[i].classList[1] == e.target.classList[1])
-        refText[i].classList.toggle("hidden")
-    }
-  };
-})
-//
-function toggleDisplay(e) {
-  if(e.target.id=="toggleTags"){
-    tagsSwitch(tagsVisible)
+  function getText(){
+      var content = dataList.innerText;
+      var dl = document.createElement('a');
+      dl.setAttribute('href', 'data:text/csv;charset=utf-8,' + encodeURIComponent(content));
+      dl.setAttribute('download', 'Digital-Profile-Data.txt');
+      dl.click();
   }
-  if(e.target.id=="toggleRefs"){
-    refsSwitch(refsVisible)
-  }
-}
-function tagsSwitch(visible) {
-  var tags = document.getElementsByClassName('tags')
-   if(visible){
-    for (var i = 0; i < tags.length; i++) {
-      tags[i].classList.add("hidden")
-    }
-    toggleTags.innerHTML = "TAGS ON";
-    toggleTags.classList.toggle("off")
-    tagsVisible = false;
-   }else {
-     for (var i = 0; i < tags.length; i++) {
-       tags[i].classList.remove("hidden")
-     }
-     toggleTags.innerHTML = "TAGS OFF";
-     toggleTags.classList.toggle("off")
-     tagsVisible = true;
-   }
-}
- function refsSwitch(visible) {
-   var refs = document.getElementsByClassName('refs')
-    if(visible){
-     for (var i = 0; i < refs.length; i++) {
-       refs[i].classList.add("hidden")
-     }
-     toggleRefs.innerHTML = "REFS ON"
-     toggleRefs.classList.toggle("off")
 
-     refsVisible = false;
-    }else {
-      for (var i = 0; i < refs.length; i++) {
-        refs[i].classList.remove("hidden");
+
+  document.addEventListener('click', function (e) {
+    if (e.target.classList.contains('ref-number')) {
+      var refText = document.getElementsByClassName('ref-text', e.target.classList[1])
+      for (var i = 0; i < refText.length; i++) { // childNodes?
+        if(refText[i].classList[1] == e.target.classList[1])
+          refText[i].classList.toggle("hidden")
       }
-      toggleRefs.innerHTML = "REFS OFF"
-      toggleRefs.classList.toggle("off")
-
-      refsVisible = true;
+    };
+  })
+  //
+  // document.getElementById("downloadText").addEventListener("click",
+  //     link.innerHTML = 'download image';
+  //     link.addEventListener('click', function(ev) {
+  //     link.href = canvas.toDataURL();
+  //     link.download = "mypainting.png";
+  // }, false);
+  //
+  function toggleDisplay(e) {
+    if(e.target.id=="toggleTags"){
+      tagsSwitch(tagsVisible)
     }
- }
+    if(e.target.id=="toggleRefs"){
+      refsSwitch(refsVisible)
+    }
+  }
+  function tagsSwitch(visible) {
+    var tags = document.getElementsByClassName('tags')
+     if(visible){
+      for (var i = 0; i < tags.length; i++) {
+        tags[i].classList.add("hidden")
+      }
+      toggleTags.innerHTML = "TAGS ON";
+      toggleTags.classList.toggle("off")
+      tagsVisible = false;
+     }else {
+       for (var i = 0; i < tags.length; i++) {
+         tags[i].classList.remove("hidden")
+       }
+       toggleTags.innerHTML = "TAGS OFF";
+       toggleTags.classList.toggle("off")
+       tagsVisible = true;
+     }
+  }
+   function refsSwitch(visible) {
+     var refs = document.getElementsByClassName('refs')
+      if(visible){
+       for (var i = 0; i < refs.length; i++) {
+         refs[i].classList.add("hidden")
+       }
+       toggleRefs.innerHTML = "REFS ON"
+       toggleRefs.classList.toggle("off")
+
+       refsVisible = false;
+      }else {
+        for (var i = 0; i < refs.length; i++) {
+          refs[i].classList.remove("hidden");
+        }
+        toggleRefs.innerHTML = "REFS OFF"
+        toggleRefs.classList.toggle("off")
+
+        refsVisible = true;
+      }
+   }
 var graph
 var radius = 6;
 //Append a SVG to the body of the html page. Assign this SVG as an object to svg
@@ -148,7 +164,6 @@ var color = d3.scaleOrdinal()
         .on("end", dragended));
 
       node.on("click", function(d, i) {
-        console.log(d);
         if(d.group==10) return;
         if(d3.select(this).attr("r") == radius){
           addNodes(d)
@@ -221,7 +236,6 @@ var color = d3.scaleOrdinal()
     }
 
     function addNodes(node) {
-      console.log('NODE: ',node);
       if(node.group == 1) {
         var nodeText = ''
         var refNo = ''
@@ -254,17 +268,13 @@ var color = d3.scaleOrdinal()
         } else {
           dataText += '<p class="tags hidden">('+tags+')</p>'
         }
-        console.log(dataText);
         if(refsVisible){
-          console.log('refs hitt');
           dataText += '<p class="refs ref-text"> '+refText+' '+year+' </p>'
         }else {
           dataText += '<p class="refs hidden ref-text"> '+refText+' '+year+' </p>'
         }
-        console.log(dataText);
 
         dataList.innerHTML += '<li>'+dataText+'</li>'
-        console.log(dataList);
       }
     }
 
