@@ -8,7 +8,7 @@ var output = '[ '
    var columns = line.replace(/(\r\n|\n|\r)/gm,"").split('\t')
    if(columns[0]) {
      parent = columns[0]
-     output += ' { "group": 8, "text":['+JSON.stringify(parent)+'], "tags":['+JSON.stringify(parent)+'] },'
+     output += ' { "group": 8, "text":['+JSON.stringify(parent)+'], "tags":['+JSON.stringify('Digital People')+'] },'
      }
    if(columns[1]) { child = columns[1]
      output += ' { "group": 4, "text":['+JSON.stringify(child)+'], "tags":['+JSON.stringify(parent)+'] }, '
@@ -164,4 +164,4 @@ function removeDups(a){ // possible not any actual duplicates.
 }
 
 
-fs.appendFileSync("./Data/output.js", output);
+fs.appendFileSync("./Data/output.json", output);

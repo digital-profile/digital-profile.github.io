@@ -89,6 +89,24 @@ function saveData () {
         refsVisible = true;
       }
    }
+
+   function getConnectedNodes(current, connections) {
+     if(current.group == 10) {
+       connections.push(current)
+       var x = []
+       for (var i = 0; i < connections.length; i++) {
+         x[i] = connections[i].index
+       }
+       return x;
+     }else {
+       connections.push(current)
+       for (var i = 0; i < graph.nodes.length; i++) {
+         if(graph.nodes[i].text == current.tags[0]){
+           getConnectedNodes(graph.nodes[i], connections)
+         }
+       }
+     }
+   }
 var graph
 var radius = 6;
 //Append a SVG to the body of the html page. Assign this SVG as an object to svg
@@ -175,13 +193,32 @@ var color = d3.scaleOrdinal()
             d3.select(this).attr("r", radius);
           }
       })
-
-      node.on("mouseover", function(d, i){
-        d3.select(this).style("stroke", "red");
-        link.style('stroke', function(l) {
-          if (d === l.source || d === l.target)
-            return '#FF0000';
+      node.on("mouseover", function(d, index){
+        console.log(d);
+        var connected = []
+        getConnectedNodes(d, connected)
+        d3.selectAll("circle")
+          .style("stroke", function(d){
+            for (var i = 0; i < connected.length; i++) {
+              if(connected[i] == d)
+              return "red"
+            }
           });
+
+        d3.selectAll("line")
+          .style('stroke', function(l) {
+            for (var i = 0; i < connected.length; i++) {
+              if(connected[i].group == 10) break
+              if(connected[i].text == l.sourceName[0])
+              return '#FF0000';
+            }
+          });
+
+        // link.style('stroke', function(l) {
+        //   if (d === l.source || d === l.target)
+        //     return '#FF0000';
+        //   });
+
         var dtext = d.text[0]
         var dyear
         if(d.text[0].indexOf('<>') !== -1){
@@ -194,10 +231,10 @@ var color = d3.scaleOrdinal()
                  .text(dtext);
       })
       node.on("mouseout", function(d){
-        d3.select(this).style("stroke", "#fff");
+        d3.selectAll("circle").style("stroke", "#fff");
 
         link.style('stroke','#999')
-              return tooltip.style("visibility", "hidden");
+        return tooltip.style("visibility", "hidden");
       });
       node.on("mousemove", function(){return tooltip.style("top",(d3.event.pageY-10)+"px").style("left",(d3.event.pageX+20)+"px");})
 
