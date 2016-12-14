@@ -186,8 +186,8 @@ var color = d3.scaleOrdinal()
       node.on("click", function(d, i) {
         if(d.group==10) return;
         if(d3.select(this).attr("r") == radius){
-          addNodes(d)
           d3.select(this).attr("r", radius * 2);
+          addNodes(d)
         }else{
           d3.select(this).attr("r", radius);
         }
@@ -212,24 +212,29 @@ var color = d3.scaleOrdinal()
               return '#FF0000';
             }
           });
-        var tagsStr = ''
+        var tagsStr = '\n'
+        var tabs = '\t'
         for (var i = 0; i < connected.length; i++) {
-          if(connected[i].group == 10) break
-          tagsStr += '\n'+connected[i].tags[0]
+          if(connected[i].group == 8) break
+          for (var j = 0; j<i; j++) {
+              tabs += '\t'
+          }
+          tagsStr += tabs+connected[i].tags[0]+'\n'
         }
 
-        console.log(connected);
         var dtext = d.text[0]+tagsStr
         var dyear
         if(d.text[0].indexOf('<>') !== -1){
           dtext = d.text[0].split("<>")
           d.year.indexOf(',') !== -1 ? dyear = d.year.split(",") : dyear = ["0000", "0000"]
-          dtext = dyear[0]+": "+dtext[0]+'\n'+dyear[1].trim()+":"+dtext[1]
+          dtext = dyear[0]+": "+dtext[0]+'\n'+dyear[1].trim()+":"+dtext[1]+tagsStr
           }
+
         return   tooltip.style("visibility", "visible")
                  .attr("class", 'tooltip')
                  .text(dtext);
       })
+
       node.on("mouseout", function(d){
         d3.selectAll("circle").style("stroke", "#fff");
 
