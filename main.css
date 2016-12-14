@@ -89,7 +89,11 @@ div.tooltip {
   background-color: #ffffff;
   color: #000000;
 }
-
+#container {
+  display: block;
+  text-align: center;
+  margin:auto;
+}
 #bottom-box{
   display: inline-flex;
 }
@@ -101,6 +105,7 @@ div.tooltip {
   border: 1px solid red;
 }
 #data{
+  text-align: left;
   font-size: 13px;
   padding-left: 20px;
 }
