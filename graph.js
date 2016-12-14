@@ -187,11 +187,10 @@ var color = d3.scaleOrdinal()
         if(d.group==10) return;
         if(d3.select(this).attr("r") == radius){
           addNodes(d)
-
-            d3.select(this).attr("r", radius * 2);
-          }else{
-            d3.select(this).attr("r", radius);
-          }
+          d3.select(this).attr("r", radius * 2);
+        }else{
+          d3.select(this).attr("r", radius);
+        }
       })
       node.on("mouseover", function(d, index){
         console.log(d);
@@ -213,8 +212,14 @@ var color = d3.scaleOrdinal()
               return '#FF0000';
             }
           });
+        var tagsStr = ''
+        for (var i = 0; i < connected.length; i++) {
+          if(connected[i].group == 10) break
+          tagsStr += '\n'+connected[i].tags[0]
+        }
 
-        var dtext = d.text[0]
+        console.log(connected);
+        var dtext = d.text[0]+tagsStr
         var dyear
         if(d.text[0].indexOf('<>') !== -1){
           dtext = d.text[0].split("<>")
