@@ -187,11 +187,10 @@ var color = d3.scaleOrdinal()
         if(d.group==10) return;
         if(d3.select(this).attr("r") == radius){
           addNodes(d)
-
-            d3.select(this).attr("r", radius * 2);
-          }else{
-            d3.select(this).attr("r", radius);
-          }
+          d3.select(this).attr("r", radius * 2);
+        }else{
+          d3.select(this).attr("r", radius);
+        }
       })
       node.on("mouseover", function(d, index){
         console.log(d);
@@ -213,13 +212,14 @@ var color = d3.scaleOrdinal()
               return '#FF0000';
             }
           });
+        var tagsStr = ''
+        for (var i = 0; i < connected.length; i++) {
+          if(connected[i].group == 10) break
+          tagsStr += '\n'+connected[i].tags[0]
+        }
 
-        // link.style('stroke', function(l) {
-        //   if (d === l.source || d === l.target)
-        //     return '#FF0000';
-        //   });
-
-        var dtext = d.text[0]
+        console.log(connected);
+        var dtext = d.text[0]+tagsStr
         var dyear
         if(d.text[0].indexOf('<>') !== -1){
           dtext = d.text[0].split("<>")
@@ -236,7 +236,19 @@ var color = d3.scaleOrdinal()
         link.style('stroke','#999')
         return tooltip.style("visibility", "hidden");
       });
-      node.on("mousemove", function(){return tooltip.style("top",(d3.event.pageY-10)+"px").style("left",(d3.event.pageX+20)+"px");})
+
+      node.on("mousemove", function(){
+
+        var offsetY = d3.event.pageY-30
+        var offsetX = d3.event.pageX+30
+        // if(d3.event.pageY>height/2){
+        //   offsetY = d3.event.pageY+30
+        // }
+        // if(d3.event.pageY<width/2){
+        //   offsetX = d3.event.pageY-30
+        // }
+
+        return tooltip.style("top",(offsetY)+"px").style("left",(offsetX)+"px");})
 
 
       var tooltip = d3.select("body")

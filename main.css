@@ -66,7 +66,6 @@ div.tooltip {
 .datum{
   display: inline;
   white-space: pre-wrap;
-
 }
 .refs{
   display: block;
@@ -112,7 +111,4 @@ div.tooltip {
   margin-right: 5px;
   border: 1px solid blue;
   text-align: center;
-}
-#downloadText {
-  text-decoration: none;
 }
