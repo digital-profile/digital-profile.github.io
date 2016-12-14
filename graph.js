@@ -214,11 +214,6 @@ var color = d3.scaleOrdinal()
             }
           });
 
-        // link.style('stroke', function(l) {
-        //   if (d === l.source || d === l.target)
-        //     return '#FF0000';
-        //   });
-
         var dtext = d.text[0]
         var dyear
         if(d.text[0].indexOf('<>') !== -1){
@@ -236,7 +231,19 @@ var color = d3.scaleOrdinal()
         link.style('stroke','#999')
         return tooltip.style("visibility", "hidden");
       });
-      node.on("mousemove", function(){return tooltip.style("top",(d3.event.pageY-10)+"px").style("left",(d3.event.pageX+20)+"px");})
+
+      node.on("mousemove", function(){
+
+        var offsetY = d3.event.pageY-30
+        var offsetX = d3.event.pageX+30
+        // if(d3.event.pageY>height/2){
+        //   offsetY = d3.event.pageY+30
+        // }
+        // if(d3.event.pageY<width/2){
+        //   offsetX = d3.event.pageY-30
+        // }
+
+        return tooltip.style("top",(offsetY)+"px").style("left",(offsetX)+"px");})
 
 
       var tooltip = d3.select("body")
