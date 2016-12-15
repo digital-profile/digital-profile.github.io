@@ -16,6 +16,8 @@ h2{
   text-align: center;
 }
 svg {
+  height:1400px;
+  width: 1400px;
   border: 1px solid red;
   margin: 2px;
 }

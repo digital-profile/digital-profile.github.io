@@ -111,8 +111,8 @@ var graph
 var radius = 6;
 //Append a SVG to the body of the html page. Assign this SVG as an object to svg
 var svg = d3.select("svg"),
-    width = +svg.attr("width"),
-    height = +svg.attr("height");
+    width = 1400
+    height = 1400
 
 var color = d3.scaleOrdinal()
           .range(["#703030", "#2F343B" , "#7E827A", "#E3CDA4", "#C77966"]);;
