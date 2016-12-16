@@ -122,7 +122,17 @@ var color = d3.scaleOrdinal()
 
 // 'output' is the data from the JSON-like string in '/Data/output.js'
     var graph = output
-
+    var largest = 0
+    for (var i = 0; i < graph.nodes.length; i++) {
+      if(graph.nodes[i].group>2){
+        var children = graph.links.filter(function(p){return p.source == i}).length
+        if(children>2){
+        graph.nodes[i].children = children
+        graph.nodes[i].weight = 44-children //most number of children a node has is 44
+        console.log(graph.nodes[i].text+' has '+ graph.nodes[i].weight+ ' weight');
+      }
+      }
+    }
     var defs = svg.append('svg:defs');
 
     defs.append("svg:pattern")
@@ -136,15 +146,18 @@ var color = d3.scaleOrdinal()
           .attr("x", 0)
           .attr("y", 0)
 
+
     var simulation =
         d3.forceSimulation()
         .force("charge", d3.forceManyBody().strength(function(d) {
-                       return d.group * -60}))
+                      if(d.weight) {return (d.weight * -30) + ((d.group-3) * -30) }
+                      else{ return -50}
+                    }))
         .force("collide", d3.forceCollide().radius(function (d) {
                         if(d.group==10){return 48}
                         else{return 10}
-                      }).strength(2).iterations(2))
-        .force("link", d3.forceLink().id(function(d, i) { return i;}).distance(20).strength(0.9))
+                      }).strength(1).iterations(1))
+        .force("link", d3.forceLink().id(function(d, i) { return i;}).distance(1).strength(3))
         .force("center", d3.forceCenter(width/2, height/2))
         .force('X', d3.forceX(width/2).strength(0.20)) // retuirnx 100 d,group
         .force('Y', d3.forceY(height/2).strength(0.20));
@@ -176,6 +189,7 @@ var color = d3.scaleOrdinal()
               })
         .style("fill", function(d) {
               if(d.group==10) {return "url(#vit-icon)";}
+              if(d.group==0) {return "green"}
               else {return color(d.group); }
             })
       .call(d3.drag()
@@ -333,4 +347,5 @@ var color = d3.scaleOrdinal()
         dataList.innerHTML += '<li>'+dataText+'</li>'
       }
     }
+
 });

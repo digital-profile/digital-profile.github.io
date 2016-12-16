@@ -74,7 +74,6 @@ var group0 = x.filter(function(node){
 parentNodes = merge(parentNodes)
 childNodes = merge(childNodes)
 gChildNodes = merge(gChildNodes)
-
 fs.readFileSync('./Data/Digital Profile - Bibliography.tsv').toString().trim().split('\n').forEach(function(line) {
   var columns = line.replace(/(\r\n|\n|\r)/gm,"").split('\t')
 
@@ -88,9 +87,12 @@ fs.readFileSync('./Data/Digital Profile - Bibliography.tsv').toString().trim().s
 })
 var centralNode = createCentralNode(parentNodes)
 output = JSON.stringify(group0.concat(centralNode, parentNodes, childNodes, gChildNodes, dataNodes)); // an array of the nodes and datapoints.
+//output = group0.concat(centralNode, parentNodes, childNodes, gChildNodes, dataNodes); // an array of the nodes and datapoints.
 
-// This is the final output, a string JSON-like string
+
+//This is the final output, a string JSON-like string
 output = 'var output = { "nodes": '+output+' , "links": '+JSON.stringify(createLinks(output)) +'}'
+
 
 function createCentralNode(tagNodes) {
   var DigitalPeople = { group: 10, text: ['Digital People']}
@@ -163,5 +165,4 @@ function removeDups(a){ // possible not any actual duplicates.
   return a;
 }
 
-
-fs.appendFileSync("./Data/output.json", output);
+fs.appendFileSync("./Data/output.js", output);
