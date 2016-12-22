@@ -4,8 +4,8 @@ document.addEventListener("DOMContentLoaded", function(event) {
   var tagsVisible = true;
   var refsVisible = true;
 
-  document.getElementById("toggleRefs").addEventListener("click", toggleDisplay);
-  document.getElementById("toggleTags").addEventListener("click", toggleDisplay);
+  document.getElementById("toggleRefs").addEventListener("click", refsSwitch);
+  document.getElementById("toggleTags").addEventListener("click", tagsSwitch);
   document.getElementById("clearData").addEventListener("click", function() {
     dataList.innerHTML = "";
     d3.selectAll("circle").attr("r", function(d){
@@ -43,17 +43,9 @@ function saveData () {
     };
   })
 
-  function toggleDisplay(e) {
-    if(e.target.id=="toggleTags"){
-      tagsSwitch(tagsVisible)
-    }
-    if(e.target.id=="toggleRefs"){
-      refsSwitch(refsVisible)
-    }
-  }
-  function tagsSwitch(visible) {
+function tagsSwitch() {
     var tags = document.getElementsByClassName('tags')
-     if(visible){
+     if(tagsVisible){
       for (var i = 0; i < tags.length; i++) {
         tags[i].classList.add("hidden")
       }
@@ -69,15 +61,14 @@ function saveData () {
        tagsVisible = true;
      }
   }
-   function refsSwitch(visible) {
+   function refsSwitch() {
      var refs = document.getElementsByClassName('refs')
-      if(visible){
+      if(refsVisible){
        for (var i = 0; i < refs.length; i++) {
          refs[i].classList.add("hidden")
        }
        toggleRefs.innerHTML = "REFS ON"
        toggleRefs.classList.toggle("off")
-
        refsVisible = false;
       }else {
         for (var i = 0; i < refs.length; i++) {
@@ -85,7 +76,6 @@ function saveData () {
         }
         toggleRefs.innerHTML = "REFS OFF"
         toggleRefs.classList.toggle("off")
-
         refsVisible = true;
       }
    }
