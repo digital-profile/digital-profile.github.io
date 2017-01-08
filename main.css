@@ -10,7 +10,12 @@ a {
   text-decoration: none;
   padding:0px;
 }
-
+svg {
+  height:1400px;
+  width: 1400px;
+  border: 1px solid red;
+  margin: 2px;
+}
 h2{
   font-family: Arial, Helvetica, sans-serif;
   text-align: center;

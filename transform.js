@@ -120,7 +120,7 @@ function merge(grouping) {
       }
 
     }
-    return grouping /// will have duplicate tags in groups, remove in links.
+    return grouping
 }
 
 function createLinks(nodes){
@@ -142,12 +142,12 @@ function createLinks(nodes){
 }
 
 
-function removeDups(a){ // possible not any actual duplicates.
-  a.forEach(function(d){     //for each element in rawLinks, d
+function removeDups(a){
+  a.forEach(function(d){
     var sourceTemp = d.source;
-    var targetTemp = d.target;       //take the values and assign
-    if(d.source > d.target){         // if d.s > d.t
-      d.source = targetTemp;          // assign d.t to d.target
+    var targetTemp = d.target;
+    if(d.source > d.target){
+      d.source = targetTemp;
       d.target = sourceTemp;
     }
   });
@@ -164,4 +164,4 @@ function removeDups(a){ // possible not any actual duplicates.
 }
 
 
-fs.appendFileSync("./Data/output.json", output);
+fs.appendFileSync("./Data/output.js", output);

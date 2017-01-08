@@ -4,13 +4,13 @@ document.addEventListener("DOMContentLoaded", function(event) {
   var tagsVisible = true;
   var refsVisible = true;
 
-  document.getElementById("toggleRefs").addEventListener("click", toggleDisplay);
-  document.getElementById("toggleTags").addEventListener("click", toggleDisplay);
+  document.getElementById("toggleRefs").addEventListener("click", refsSwitch);
+  document.getElementById("toggleTags").addEventListener("click", tagsSwitch);
   document.getElementById("clearData").addEventListener("click", function() {
     dataList.innerHTML = "";
     d3.selectAll("circle").attr("r", function(d){
       if(d.group==10) return 40
-      else { return radius}
+      else { return radius }
     });
   });
 
@@ -36,24 +36,16 @@ function saveData () {
   document.addEventListener('click', function (e) {
     if (e.target.classList.contains('ref-number')) {
       var refText = document.getElementsByClassName('ref-text', e.target.classList[1])
-      for (var i = 0; i < refText.length; i++) { // childNodes?
+      for (var i = 0; i < refText.length; i++) {
         if(refText[i].classList[1] == e.target.classList[1])
           refText[i].classList.toggle("hidden")
       }
     };
   })
 
-  function toggleDisplay(e) {
-    if(e.target.id=="toggleTags"){
-      tagsSwitch(tagsVisible)
-    }
-    if(e.target.id=="toggleRefs"){
-      refsSwitch(refsVisible)
-    }
-  }
-  function tagsSwitch(visible) {
+function tagsSwitch() {
     var tags = document.getElementsByClassName('tags')
-     if(visible){
+     if(tagsVisible){
       for (var i = 0; i < tags.length; i++) {
         tags[i].classList.add("hidden")
       }
@@ -69,15 +61,14 @@ function saveData () {
        tagsVisible = true;
      }
   }
-   function refsSwitch(visible) {
+   function refsSwitch() {
      var refs = document.getElementsByClassName('refs')
-      if(visible){
+      if(refsVisible){
        for (var i = 0; i < refs.length; i++) {
          refs[i].classList.add("hidden")
        }
        toggleRefs.innerHTML = "REFS ON"
        toggleRefs.classList.toggle("off")
-
        refsVisible = false;
       }else {
         for (var i = 0; i < refs.length; i++) {
@@ -85,7 +76,6 @@ function saveData () {
         }
         toggleRefs.innerHTML = "REFS OFF"
         toggleRefs.classList.toggle("off")
-
         refsVisible = true;
       }
    }
@@ -111,8 +101,8 @@ var graph
 var radius = 6;
 //Append a SVG to the body of the html page. Assign this SVG as an object to svg
 var svg = d3.select("svg"),
-    width = +svg.attr("width"),
-    height = +svg.attr("height");
+    width = 1400,
+    height = 1400
 
 var color = d3.scaleOrdinal()
           .range(["#703030", "#2F343B" , "#7E827A", "#E3CDA4", "#C77966"]);;
@@ -146,7 +136,7 @@ var color = d3.scaleOrdinal()
                       }).strength(2).iterations(2))
         .force("link", d3.forceLink().id(function(d, i) { return i;}).distance(20).strength(0.9))
         .force("center", d3.forceCenter(width/2, height/2))
-        .force('X', d3.forceX(width/2).strength(0.20)) // retuirnx 100 d,group
+        .force('X', d3.forceX(width/2).strength(0.20))
         .force('Y', d3.forceY(height/2).strength(0.20));
 
 
@@ -193,7 +183,6 @@ var color = d3.scaleOrdinal()
         }
       })
       node.on("mouseover", function(d, index){
-        console.log(d);
         var connected = []
         getConnectedNodes(d, connected)
         d3.selectAll("circle")
