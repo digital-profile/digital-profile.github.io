@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
     dataList.innerHTML = "";
     d3.selectAll("circle").attr("r", function(d){
       if(d.group==10) return 40
-      else { return radius}
+      else { return radius }
     });
   });
 
@@ -36,7 +36,7 @@ function saveData () {
   document.addEventListener('click', function (e) {
     if (e.target.classList.contains('ref-number')) {
       var refText = document.getElementsByClassName('ref-text', e.target.classList[1])
-      for (var i = 0; i < refText.length; i++) { // childNodes?
+      for (var i = 0; i < refText.length; i++) {
         if(refText[i].classList[1] == e.target.classList[1])
           refText[i].classList.toggle("hidden")
       }
@@ -136,7 +136,7 @@ var color = d3.scaleOrdinal()
                       }).strength(2).iterations(2))
         .force("link", d3.forceLink().id(function(d, i) { return i;}).distance(20).strength(0.9))
         .force("center", d3.forceCenter(width/2, height/2))
-        .force('X', d3.forceX(width/2).strength(0.20)) // retuirnx 100 d,group
+        .force('X', d3.forceX(width/2).strength(0.20))
         .force('Y', d3.forceY(height/2).strength(0.20));
 
 
@@ -183,7 +183,6 @@ var color = d3.scaleOrdinal()
         }
       })
       node.on("mouseover", function(d, index){
-        console.log(d);
         var connected = []
         getConnectedNodes(d, connected)
         d3.selectAll("circle")
