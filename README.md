@@ -1,8 +1,9 @@
 # digital-profile.github.io
 A visual profile of people in the digital age.
 
+## A tool to extract and format research data, then transform it into a visualisation, using Node and D3.js. 
 
-##Instructions.
+## Instructions.
 * Navigate to the folder containing this program in terminal.
 * Download the latest sheets of the datapoints, tags and references as tab separated value (.tsv) files. They should be titled 'Digital Profile - Bibliography.tsv' etc.
 * Place them in the Data folder.
